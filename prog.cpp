@@ -5,6 +5,11 @@
 
 using namespace std;
 
+//Размер блока, используемого для расширения памяти под строку
+#define blockSize 5
+
+unsigned lookForNewLine(char *str, unsigned strUsed);
+
 int main(int argc, char *argv[]) {
     
 
@@ -13,12 +18,12 @@ int main(int argc, char *argv[]) {
        return 1;
     }
     
-    FILE 	*stream = fopen(argv[1], "r");
+    FILE *stream = fopen(argv[1], "r");
 	
 	int ch, number_of_lines = 0;
 
-    while (EOF != (ch = getc(stream)))
-        if ('\n' == ch)
+    while ((ch = getc(stream)) != EOF)
+        if (ch == '\n')
             ++number_of_lines;
 
 
