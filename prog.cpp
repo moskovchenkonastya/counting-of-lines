@@ -5,14 +5,8 @@
 
 using namespace std;
 
-//Размер блока, используемого для расширения памяти под строку
-#define blockSize 5
-
-unsigned lookForNewLine(char *str, unsigned strUsed);
-
 int main(int argc, char *argv[]) {
     
-
     if (argc != 2){
        cout <<"Data is not correct\n" << endl;
        return 1;
@@ -26,9 +20,7 @@ int main(int argc, char *argv[]) {
         if (ch == '\n')
             ++number_of_lines;
 
-
     cout << number_of_lines<< endl;
-
 
    fclose(stream);
 
