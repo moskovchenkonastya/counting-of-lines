@@ -1,31 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>  
-
+#include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
-int main(int argc, char *argv[]) {
-    
-    if (argc != 2){
-       cout <<"Data is not correct\n" << endl;
-       return 1;
+int main (int argc, char *argv[]) {
+
+
+  if (argc != 2){
+
+    cout <<"Data is not correct\n" << endl;
+    return 1;
+  }
+
+  int count = 0;
+  string line;
+
+  ifstream myfile (argv[1]);
+
+  if (myfile.is_open())
+  {
+    while ( myfile.good() )
+    {
+      getline (myfile,line);
+      //cout << line << endl;
+      ++count;
     }
-    
-    FILE *stream = fopen(argv[1], "r");
-	
-	int ch, number_of_lines = 0;
+    myfile.close();
+  }
 
-    while ((ch = getc(stream)) != EOF)
-        if (ch == '\n')
-            ++number_of_lines;
+  else cout << "Unable to open file";
 
-    cout << number_of_lines<< endl;
+  cout << count << endl;
 
-   fclose(stream);
-
-   return 0;
- 
-
+  return 0;
 }
+
 
