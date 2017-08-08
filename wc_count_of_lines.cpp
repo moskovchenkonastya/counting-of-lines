@@ -11,11 +11,11 @@
 // macro to test the equality of two strings
 #define streq(x, y) (!strcmp(x,y))
 
-// cumulative line, word, and char counts for all files
-static uintmax_t total_lines, total_words, total_chars;
+// cumulative lines for all files
+static uintmax_t total_lines;
 
 // printing options
-static bool print_lines, print_words, print_chars;
+static bool print_lines;
 
 // used to make neat columns
 static unsigned int number_width;
@@ -53,11 +53,8 @@ static int compute_number_width(int nfiles, char **files) {
 }
 
 // print the number of lines, words, and chars in the file
-void print_counts(uintmax_t lines, uintmax_t words, uintmax_t chars,
-                  const char *file) {
+void print_counts(uintmax_t lines, const char *file) {
     if (print_lines) printf(number_format, number_width, lines);
-    if (print_words) printf(number_format, number_width, words);
-    if (print_chars) printf(number_format, number_width, chars);
 
     if (file == NULL) {
         puts("-");
@@ -78,11 +75,10 @@ int count(const char *filename) {
         return 1;
     }
 
-    int lines, words, chars;
-    lines = words = chars = 0;
+    int lines;
+    lines = 0;
 
     int ch;
-    bool in_word = false;
 
     while ((ch = fgetc(fp)) != EOF) {
         // count lines
@@ -90,52 +86,35 @@ int count(const char *filename) {
             lines++;
         }
 
-        // count words
-        if (in_word && !isspace(ch)) {
-            in_word = false;
-        } else if (!in_word && isspace(ch)) {
-            in_word = true;
-            words++;
-        }
-
-        // count chars
-        chars++;
     }
 
     if (fp != stdin) fclose(fp);
     files_read++;
 
-    print_counts((uintmax_t) lines, (uintmax_t) words, (uintmax_t) chars,
-                 filename);
+    print_counts((uintmax_t) lines, filename);
 
     total_lines += lines;
-    total_words += words;
-    total_chars += chars;
 
     return 0;
 }
 
 int main(int argc, char *argv[]) {
     // default option values
-    print_lines = print_words = print_chars = false;
+    print_lines = false;
 
     // parse options
     while ((argc > 1) && (argv[1][0] == '-') && (!streq(argv[1], "-"))) {
         if (streq(argv[1], "-l") || streq(argv[1], "--lines")) {
             print_lines = true;
-        } else if (streq(argv[1], "-w") || streq(argv[1], "--words")) {
-            print_words = true;
-        } else if (streq(argv[1], "-c") || streq(argv[1], "--chars")) {
-            print_chars = true;
-        }
+        } 
 
         argv++;
         argc--;
     }
 
     // if no options were specified, print everything
-    if (!(print_lines || print_words || print_chars)) {
-        print_lines = print_words = print_chars = true;
+    if (!(print_lines) {
+        print_lines = true;
     }
 
     number_width = (unsigned int) compute_number_width(argc - 1, argv + 1);
@@ -156,7 +135,7 @@ int main(int argc, char *argv[]) {
 
     // print total counts if there was more than one file
     if (files_read > 1) {
-        print_counts(total_lines, total_words, total_chars, "total");
+        print_counts(total_lines, "total");
     }
 
     return EXIT_SUCCESS;
