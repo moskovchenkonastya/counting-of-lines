@@ -1,3 +1,7 @@
+// by Moskovchenko Nastya
+// Count lines on all files like wc -l filename1 filename2
+
+
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -8,10 +12,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-// macro to test the equality of two strings
-#define streq(x, y) (!strcmp(x,y))
-
-// cumulative lines for all files
+// count lines for all files
 static uintmax_t total_lines;
 
 // printing options
@@ -52,7 +53,7 @@ static int compute_number_width(int nfiles, char **files) {
     return ndigits(total_size);
 }
 
-// print the number of lines, words, and chars in the file
+// print the number of lines in the file
 void print_counts(uintmax_t lines, const char *file) {
     if (print_lines) printf(number_format, number_width, lines);
 
@@ -63,7 +64,7 @@ void print_counts(uintmax_t lines, const char *file) {
     }
 }
 
-// count the number of lines, words, and chars in the file
+// count the number of lines in the file
 // if filename is NULL, count from stdin
 int count(const char *filename) {
     FILE *fp;
