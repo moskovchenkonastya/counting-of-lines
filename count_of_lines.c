@@ -86,11 +86,8 @@ int count(const char *filename) {
 
     if (fp != stdin) fclose(fp);
     files_read++;
-
     print_counts((uintmax_t) lines, filename);
-
     total_lines += lines;
-
     return 0;
 }
 
