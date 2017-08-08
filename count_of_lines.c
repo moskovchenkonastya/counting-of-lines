@@ -1,7 +1,6 @@
 // by Moskovchenko Nastya
 // Count lines on all files like wc -l filename1 filename2
 
-
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -49,7 +48,6 @@ static int compute_number_width(int nfiles, char **files) {
             }
         }
     }
-
     return ndigits(total_size);
 }
 
@@ -75,10 +73,8 @@ int count(const char *filename) {
         fprintf(stderr, "wc: %s: %s\n", filename, strerror(errno));
         return 1;
     }
-
     int lines;
     lines = 0;
-
     int ch;
 
     while ((ch = fgetc(fp)) != EOF) {
@@ -86,7 +82,6 @@ int count(const char *filename) {
         if (ch == '\n') {
             lines++;
         }
-
     }
 
     if (fp != stdin) fclose(fp);
@@ -102,13 +97,11 @@ int count(const char *filename) {
 int main(int argc, char *argv[]) {
     // default option values
     print_lines = false;
-
     // parse options
     while ((argc > 1) && (argv[1][0] == '-') && (!streq(argv[1], "-"))) {
         if (streq(argv[1], "-l") || streq(argv[1], "--lines")) {
             print_lines = true;
         } 
-
         argv++;
         argc--;
     }
